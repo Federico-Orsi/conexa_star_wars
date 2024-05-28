@@ -11,10 +11,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   imports: [
     UsersModule,
     PassportModule,
-    // JwtModule.register({
-    //   secret: 'YOUR_SECRET_KEY',
-    //   signOptions: { expiresIn: '60m' },
-    // }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

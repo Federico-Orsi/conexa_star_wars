@@ -1,4 +1,6 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { UsersService } from 'src/users/users.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -8,6 +10,9 @@ import { SignupDto } from './dto/signup.dto';
 describe('AuthController', () => {
   let authController: AuthController;
   let authService: AuthService;
+  let usersService: UsersService;
+  let jwtService: JwtService;
+
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,13 +38,12 @@ describe('AuthController', () => {
       const loginDto: LoginDto = {
           username: 'Federico Orsi',
           password: '123',
-          id: 1,
-          role: 'Administrador'
       };
       jest.spyOn(authService, 'login').mockImplementation(async () => result);
 
       expect(await authController.login(loginDto)).toBe(result);
     });
+
   });
 
   describe('register', () => {

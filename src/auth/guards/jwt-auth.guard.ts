@@ -35,7 +35,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       throw new UnauthorizedException('Credenciales de autenticación inválidas');
     }
 
-    // return super.canActivate(context);
+
      return true;
   }
 }

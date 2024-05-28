@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { UserRole } from 'src/enums/roles.enum';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -22,7 +23,10 @@ export class AuthService {
   }
 
   async login(user: LoginDto) {
-    const payload = { username: user.username, sub: user.id, role: user.role };
+
+    const found_user = await this.usersService.findOne(user.username);
+    const payload = { username: found_user.username, role: found_user.role };
+
     return {
       access_token: this.jwtService.sign(payload),
 
@@ -30,8 +34,14 @@ export class AuthService {
   }
 
   async register(user: SignupDto) {
+
+    if (user.role == UserRole.Admin || user.role == UserRole.RegularUser || user.role == undefined){
+
     const hashedPassword = bcrypt.hashSync(user.password, 8);
     user.password = hashedPassword;
     return this.usersService.create(user);
+    } else{
+      throw new UnauthorizedException('Sorry, the only roles available to register a new User are: Administrador or Usuario Regular');
+    }
   }
 }

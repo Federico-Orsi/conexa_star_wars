@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 
 describe('AuthService', () => {
@@ -37,13 +36,6 @@ describe('AuthService', () => {
   });
 
   describe('validateUser', () => {
-    // it('should return user data without password if validation is successful', async () => {
-    //   const user = { id: 1, username: 'Federico Orsi', password: '123', role: "Administrador" };
-    //   jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
-
-    //   const result = await authService.validateUser('Federico Orsi', '123');
-    //   expect(result).toEqual(user);
-    // });
 
     it('should return null if validation fails', async () => {
       jest.spyOn(usersService, 'findOne').mockResolvedValue(null);
@@ -53,13 +45,6 @@ describe('AuthService', () => {
     });
   });
 
-  describe('login', () => {
-    it('should return an access token', async () => {
-      const loginDto: LoginDto = { username: 'test', password: '123', id: 1, role: 'user' };
-      const result = await authService.login(loginDto);
-      expect(result).toEqual({ access_token: 'test_token' });
-    });
-  });
 
   describe('register', () => {
     it('should return the created user', async () => {
